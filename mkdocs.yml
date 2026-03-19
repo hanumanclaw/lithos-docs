@@ -126,7 +126,7 @@ nav:
     - lithos_search: mcp-tools/lithos_search.md
     - lithos_list: mcp-tools/lithos_list.md
     - lithos_delete: mcp-tools/lithos_delete.md
-    - lithos_health: mcp-tools/lithos_health.md
+    - Health Endpoint: mcp-tools/lithos_health.md
     - lithos_agent_register: mcp-tools/lithos_agent_register.md
     - lithos_task_status: mcp-tools/lithos_task_status.md
     - Graph Tools: mcp-tools/graph-tools.md

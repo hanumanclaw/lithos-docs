@@ -63,9 +63,11 @@ links = lithos_links(id="uuid-of-asyncio-note", direction="both", depth=2)
 
 List all tags in the knowledge base with document counts.
 
-<div class="tool-sig">lithos_tags()</div>
+<div class="tool-sig">lithos_tags([prefix])</div>
 
-No parameters.
+| Name | Type | Required | Description |
+|------|------|:--------:|-------------|
+| `prefix` | string | — | Return only tags starting with this prefix (e.g. `"py"` returns `python`, `pytest`, …) |
 
 ### Returns
 

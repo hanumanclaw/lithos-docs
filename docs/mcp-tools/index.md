@@ -1,10 +1,10 @@
 # MCP Tools Reference
 
-Lithos exposes **22 MCP tools** across five categories. All tools are available via both SSE and stdio transports.
+Lithos exposes **24 MCP tools** across five categories. All tools are available via both SSE and stdio transports.
 
 ## Tool Categories
 
-=== "Knowledge (7)"
+=== "Knowledge (6)"
 
     | Tool | Description |
     |------|-------------|
@@ -14,7 +14,6 @@ Lithos exposes **22 MCP tools** across five categories. All tools are available 
     | [`lithos_list`](lithos_list.md) | List items with filters |
     | [`lithos_delete`](lithos_delete.md) | Delete a knowledge item |
     | `lithos_cache_lookup` | Check for a cached answer before researching |
-    | `lithos_health` | Knowledge base health check |
 
 === "Graph (3)"
 
@@ -36,15 +35,18 @@ Lithos exposes **22 MCP tools** across five categories. All tools are available 
 
     → [Agent Tools Reference](lithos_agent_register.md)
 
-=== "Coordination (8)"
+=== "Coordination (11)"
 
     | Tool | Description |
     |------|-------------|
     | `lithos_task_create` | Create a coordination task |
+    | `lithos_task_update` | Update task metadata (title, description, tags) |
     | `lithos_task_claim` | Claim an aspect of a task |
     | `lithos_task_renew` | Extend a task claim |
     | `lithos_task_release` | Release a task claim |
     | `lithos_task_complete` | Mark a task complete |
+    | `lithos_task_cancel` | Cancel a task, releasing all claims |
+    | `lithos_task_list` | List tasks with optional filters |
     | [`lithos_task_status`](lithos_task_status.md) | Get task status and active claims |
     | `lithos_finding_post` | Post a finding to a task |
     | `lithos_finding_list` | List findings for a task |
@@ -56,6 +58,19 @@ Lithos exposes **22 MCP tools** across five categories. All tools are available 
     | Tool | Description |
     |------|-------------|
     | `lithos_stats` | Knowledge base statistics |
+
+---
+
+## HTTP Endpoints
+
+In addition to MCP tools, Lithos exposes HTTP endpoints for infrastructure use:
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /health` | Server health check — returns `200 OK` or `503`. Use with Docker `HEALTHCHECK` and load balancers. |
+| `GET /events` | Server-Sent Events stream for real-time event delivery. |
+
+→ [Health Endpoint Reference](lithos_health.md)
 
 ---
 
@@ -108,6 +123,6 @@ All tools that can fail return a structured error envelope:
 | `duplicate` | `lithos_write` | A document with the same `source_url` already exists |
 | `claim_failed` | `lithos_task_claim` | Task missing, closed, or aspect already claimed |
 | `claim_not_found` | `lithos_task_renew`, `lithos_task_release` | No active claim for this agent/aspect |
-| `task_not_found` | `lithos_task_complete` | Task missing or already closed |
+| `task_not_found` | `lithos_task_complete`, `lithos_task_cancel`, `lithos_task_update` | Task missing or already closed |
 | `invalid_mode` | `lithos_search` | Unknown search mode |
 | `invalid_input` | various | Bad argument values |
