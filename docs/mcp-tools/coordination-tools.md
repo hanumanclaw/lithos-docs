@@ -13,12 +13,15 @@ Lithos provides **TTL-based task claiming** — a lightweight distributed lockin
 ```mermaid
 graph LR
     TC["lithos_task_create\ncreate a task"] --> CL["lithos_task_claim\nclaim an aspect"]
+    TC --> TU["lithos_task_update\nupdate metadata"]
+    TC --> TL["lithos_task_list\nlist tasks"]
     CL --> TR["lithos_task_renew\nextend the claim"]
     CL --> RL["lithos_task_release\nabandon the claim"]
     CL --> FP["lithos_finding_post\npost a result"]
     FP --> FL["lithos_finding_list\nread results"]
     TR --> TS["lithos_task_status\ncheck progress"]
     FL --> COMP["lithos_task_complete\nclose the task"]
+    TC --> CANC["lithos_task_cancel\ncancel the task"]
 ```
 
 ---
@@ -28,10 +31,13 @@ graph LR
 | Tool | Purpose |
 |------|---------|
 | `lithos_task_create` | Create a named task |
+| `lithos_task_update` | Update task metadata (title, description, tags) |
 | `lithos_task_claim` | Claim an aspect (distributed lock with TTL) |
 | `lithos_task_renew` | Extend a claim before expiry |
 | `lithos_task_release` | Release a claim early |
 | `lithos_task_complete` | Mark task done, release all claims |
+| `lithos_task_cancel` | Cancel a task, releasing all active claims |
+| `lithos_task_list` | List tasks with optional filters |
 | `lithos_task_status` | Query task state and active claims |
 | `lithos_finding_post` | Post a finding (result) to a task |
 | `lithos_finding_list` | List findings for a task |
@@ -52,6 +58,84 @@ graph LR
 | `tags` | string[] | — | Task tags for filtering |
 
 **Returns:** `{ "task_id": "task-abc123" }`
+
+---
+
+### lithos_task_update
+
+Update mutable task metadata without closing the task. At least one of `title`, `description`, or `tags` must be provided.
+
+**Arguments:**
+
+| Name | Type | Required | Description |
+|------|------|:--------:|-------------|
+| `task_id` | string | ✅ | Task ID to update |
+| `agent` | string | ✅ | Agent making the update |
+| `title` | string | — | New task title |
+| `description` | string | — | New task description |
+| `tags` | string[] | — | New task tags (replaces existing tags) |
+
+**Returns:** `{ "success": true, "message": "Task task-abc123 updated" }` or `{ "status": "error", "code": "task_not_found" }`
+
+---
+
+### lithos_task_cancel
+
+Cancel a task, releasing all active claims on it. Use this when a task should be abandoned entirely — it cannot be resumed after cancellation.
+
+**Arguments:**
+
+| Name | Type | Required | Description |
+|------|------|:--------:|-------------|
+| `task_id` | string | ✅ | Task ID |
+| `agent` | string | ✅ | Agent cancelling the task |
+| `reason` | string | — | Optional reason for cancellation |
+
+**Returns:** `{ "success": true }` or `{ "status": "error", "code": "task_not_found" }`
+
+!!! note "Cancelled vs completed"
+    Use `lithos_task_cancel` for tasks that are being abandoned. Use `lithos_task_complete` for tasks that have been successfully finished. Both close the task and release all claims, but the final `status` differs (`"cancelled"` vs `"completed"`).
+
+---
+
+### lithos_task_list
+
+List tasks with optional filters. Useful for discovering open work, auditing completed tasks, or monitoring coordination activity.
+
+**Arguments:**
+
+| Name | Type | Required | Description |
+|------|------|:--------:|-------------|
+| `agent` | string | — | Filter to tasks created by this agent |
+| `status` | string | — | Filter by status: `"open"`, `"completed"`, or `"cancelled"` (omit for all) |
+| `tags` | string[] | — | Filter to tasks that have **all** of these tags |
+| `since` | string | — | Filter to tasks created at or after this ISO 8601 datetime (e.g. `"2024-01-01T00:00:00Z"`) |
+
+**Returns:**
+
+```json
+{
+  "tasks": [
+    {
+      "id": "task-abc123",
+      "title": "Research rate limiting strategies",
+      "description": "Survey common approaches...",
+      "status": "open",
+      "created_by": "research-agent",
+      "created_at": "2026-03-19T10:00:00Z",
+      "tags": ["research", "api"]
+    }
+  ]
+}
+```
+
+**Example — find all open tasks:**
+
+```python
+result = lithos_task_list(status="open")
+for task in result["tasks"]:
+    print(f"[{task['id']}] {task['title']} — created by {task['created_by']}")
+```
 
 ---
 

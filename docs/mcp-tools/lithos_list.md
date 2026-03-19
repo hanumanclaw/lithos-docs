@@ -2,7 +2,7 @@
 
 List knowledge items with optional filters. Useful for browsing, inventory, and sync operations.
 
-<div class="tool-sig">lithos_list([path_prefix], [tags], [author], [since], [limit], [offset])</div>
+<div class="tool-sig">lithos_list([path_prefix], [tags], [author], [since], [title_contains], [content_query], [limit], [offset])</div>
 
 ---
 
@@ -14,6 +14,8 @@ List knowledge items with optional filters. Useful for browsing, inventory, and 
 | `tags` | string[] | — | Filter to documents with **all** of these tags |
 | `author` | string | — | Filter to documents by this author |
 | `since` | string | — | Return only documents updated after this ISO 8601 timestamp |
+| `title_contains` | string | — | Return only documents whose title contains this substring (case-insensitive) |
+| `content_query` | string | — | Full-text filter applied within the listed results |
 | `limit` | int | — | Max results (default: `50`) |
 | `offset` | int | — | Pagination offset (default: `0`) |
 

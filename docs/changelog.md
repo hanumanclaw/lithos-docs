@@ -4,9 +4,11 @@ All notable changes to Lithos are documented here. The full changelog is maintai
 
 ---
 
-## Unreleased
+## v0.1.5
 
 ### Breaking Changes
+
+- **`lithos_health` MCP tool replaced by HTTP endpoint.** `GET /health` is now a plain HTTP endpoint (returns `200 OK` when healthy, `503` when degraded). It is no longer an MCP tool. Update any callers using `lithos_health()` to use `curl http://<host>:8765/health` or an HTTP client instead.
 
 - **`lithos_semantic` MCP tool removed.** Use `lithos_search` with `mode="semantic"` for pure semantic search, or the new default `mode="hybrid"` for best results.
 
@@ -16,11 +18,21 @@ All notable changes to Lithos are documented here. The full changelog is maintai
 
 - **`agent` is now required on `lithos_delete`.** Previously optional. Callers that omit it will receive a `TypeError` from the MCP layer.
 
+- **`sort_by_confidence` removed from `lithos_cache_lookup`.** Results are now always sorted by confidence score. Remove the `sort_by_confidence` parameter from any calls that use it.
+
 ### Added
+
+- **`lithos_task_list`** — list tasks with optional filters: `agent`, `status` (`"open"` | `"completed"` | `"cancelled"`), `tags` (AND), and `since` (ISO timestamp).
+
+- **`lithos_task_cancel`** — cancel a task, releasing all active claims. Takes `task_id`, `agent`, and an optional `reason`.
+
+- **`lithos_task_update`** — update mutable task metadata (`title`, `description`, `tags`) without closing the task. At least one field must be provided.
 
 - `lithos_search` now accepts a `mode` parameter: `fulltext` | `semantic` | `hybrid` (default: `hybrid`).
 - Hybrid search mode merges Tantivy (BM25) and ChromaDB (cosine similarity) results using Reciprocal Rank Fusion (RRF, k=60) for improved ranking quality.
 - Unknown `mode` values now return a structured `{ "status": "error", "code": "invalid_mode", ... }` dict instead of raising a `ValueError`.
+- `lithos_tags` accepts an optional `prefix` parameter to filter tags by prefix.
+- `lithos_list` accepts two new optional filters: `title_contains` (substring match on title) and `content_query` (full-text search within results).
 
 ### Fixed
 
@@ -35,6 +47,8 @@ All notable changes to Lithos are documented here. The full changelog is maintai
     | `lithos_task_renew` (no claim) | `claim_not_found` |
     | `lithos_task_release` (no claim) | `claim_not_found` |
     | `lithos_task_complete` (missing/closed) | `task_not_found` |
+    | `lithos_task_cancel` (missing/closed) | `task_not_found` |
+    | `lithos_task_update` (missing) | `task_not_found` |
 
 ### Schema Changes
 
