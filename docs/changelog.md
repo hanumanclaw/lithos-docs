@@ -4,6 +4,14 @@ All notable changes to Lithos are documented here. The full changelog is maintai
 
 ---
 
+## v0.1.6
+
+### Fixed
+
+- **PyPI publish fix.** No functional changes. Re-publish to resolve a packaging issue with the v0.1.5 release.
+
+---
+
 ## v0.1.5
 
 ### Breaking Changes
