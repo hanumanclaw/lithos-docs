@@ -3,7 +3,7 @@
 Lithos exposes **28 MCP tools** across five categories. All tools are available via both SSE and stdio transports.
 
 !!! info "v0.2.1"
-    This reference reflects v0.2.1. `lithos_conflict_resolve` and `lithos_node_stats` were added in v0.2.0 (LCMA MVP1). `lithos_links` and `lithos_provenance` were removed in v0.2.1 — use [`lithos_related`](graph-tools.md#lithos_related) instead.
+    This reference reflects v0.2.1. `lithos_conflict_resolve` and `lithos_node_stats` were added in v0.2.1 (LCMA MVP2). `lithos_links` and `lithos_provenance` were removed in v0.2.1 — use [`lithos_related`](graph-tools.md#lithos_related) instead.
 
 ## Tool Categories
 
@@ -76,7 +76,7 @@ In addition to MCP tools, Lithos exposes HTTP endpoints for infrastructure use:
 |----------|-------------|
 | `GET /health` | Server health check — returns `200 OK` or `503`. Use with Docker `HEALTHCHECK` and load balancers. |
 | `GET /events` | Server-Sent Events stream for real-time event delivery. |
-| `GET /audit` | Read-access audit log — filterable by agent, document, and time range. |
+| `GET /audit` | Read-access audit log — filterable by agent, document, and start time. |
 | `GET /metrics` | Prometheus-compatible metrics (added v0.1.8). |
 
 → [Health Endpoint Reference](lithos_health.md)

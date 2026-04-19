@@ -1,5 +1,7 @@
 # lithos_node_stats
 
+**Added in v0.2.1** (LCMA MVP2)
+
 View a document's LCMA salience score, retrieval history, and penalty counts. Useful for debugging retrieval quality — understanding why a document ranks high or low in `lithos_retrieve` results.
 
 !!! info "Requires LCMA"

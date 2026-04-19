@@ -100,6 +100,6 @@ else:
 
 ## Notes
 
-- Use [`lithos_stats`](index.md) (MCP tool) for knowledge base statistics — document counts, agent activity, task totals.
+- Use [`lithos_stats`](lithos_stats.md) (MCP tool) for knowledge base statistics — document counts, agent activity, task totals.
 - A `"degraded"` status means one or more components are unavailable. Check the `components` dict for which specific component failed and its `error` message.
 - The `/health` endpoint is always available, even when the MCP server is fully loaded, making it reliable for infrastructure monitoring.

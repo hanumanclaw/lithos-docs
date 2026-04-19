@@ -323,9 +323,8 @@ Resolve a contradiction between two notes by setting the resolution state on a `
 
 | Code | Condition |
 |------|-----------|
-| `invalid_input` | `resolution` is not one of the valid values; `winner_id` is missing for `superseded`; `winner_id` is not one of the edge endpoints |
+| `invalid_input` | `resolution` is not one of the valid values; `winner_id` is missing for `superseded`; `winner_id` is not one of the edge endpoints; the edge is not of type `contradicts` |
 | `not_found` | `edge_id` does not exist |
-| `invalid_input` | The edge is not of type `contradicts` |
 | `update_failed` | Edge update could not be applied |
 
 ### Example

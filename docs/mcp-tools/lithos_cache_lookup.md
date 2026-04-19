@@ -1,5 +1,7 @@
 # lithos_cache_lookup
 
+**Added in v0.1.3**
+
 Check for fresh cached knowledge before doing expensive research. Returns a full cache hit, a stale reference (update instead of duplicate), or a clean miss.
 
 !!! tip "Always check the cache first"
@@ -9,14 +11,14 @@ Check for fresh cached knowledge before doing expensive research. Returns a full
 
 ## Parameters
 
-| Name | Type | Required | Default | Description |
-|------|------|:--------:|---------|-------------|
-| `query` | string | ✅ | — | What you are about to research |
-| `source_url` | string | — | `null` | Canonical URL for exact dedup-aware lookup. When provided, a fast exact match is tried first before falling back to semantic search. |
-| `max_age_hours` | float | — | `null` | Reject documents older than N hours (based on `updated_at`). Must be positive. |
-| `min_confidence` | float | — | `0.5` | Skip candidates whose `metadata.confidence` is strictly below this value. Range: 0.0–1.0. |
-| `limit` | int | — | `3` | Maximum candidate documents to evaluate during semantic fallback. Must be ≥ 1. |
-| `tags` | string[] | — | `null` | Restrict to documents with all of these tags (AND semantics). |
+| Name | Type | Required | Description |
+|------|------|:--------:|-------------|
+| `query` | string | ✅ | What you are about to research |
+| `source_url` | string | — | Canonical URL for exact dedup-aware lookup. When provided, a fast exact match is tried first before falling back to semantic search. Default: `null`. |
+| `max_age_hours` | float | — | Reject documents older than N hours (based on `updated_at`). Must be positive. Default: `null` (no age limit). |
+| `min_confidence` | float | — | Skip candidates whose `metadata.confidence` is strictly below this value. Range: 0.0–1.0. Default: `0.5`. |
+| `limit` | int | — | Maximum candidate documents to evaluate during semantic fallback. Must be ≥ 1. Default: `3`. |
+| `tags` | string[] | — | Restrict to documents with all of these tags (AND semantics). Default: `null`. |
 
 ## Returns
 

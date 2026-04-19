@@ -1,5 +1,7 @@
 # lithos_stats
 
+**Added in v0.1.1**
+
 Get knowledge base statistics and health indicators. Use this to audit the health of the Lithos instance — document counts, index drift, unresolved links, expired claims, and more.
 
 <div class="tool-sig">lithos_stats()</div>
